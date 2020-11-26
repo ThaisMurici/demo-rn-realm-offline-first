@@ -1,0 +1,34 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "name": "Corrida matinal",
+      "start_date": "2020-11-25T9:00:00.000Z",
+      "end_date": "2020-11-25T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "name": "Patins na esplanada do mineirão",
+      "start_date": "2020-11-25T14:00:00.000Z",
+      "end_date": "2020-11-25T15:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "name": "Netflix",
+      "start_date": "2020-11-25T20:00:00.000Z",
+      "end_date": "2020-11-25T23:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "name": "Andar a cavalo",
+      "start_date": "2020-11-26T10:00:00.000Z",
+      "end_date": "2020-11-26T11:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "name": "Açaí",
+      "start_date": "2020-11-26T12:00:00.000Z",
+      "end_date": "2020-11-26T13:00:00.000Z"
+    }
+  ]
+}
