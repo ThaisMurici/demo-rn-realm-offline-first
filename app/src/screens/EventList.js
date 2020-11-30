@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, SafeAreaView, SectionList } from 'react-native';
 
 import { getRealmInstance } from '../database';
 import { syncAppData } from '../services/sync';
+import { groupEventsByDate } from '../services/formatter';
 
 export default function EventList() {
   const [events, setEvents] = useState([]);
@@ -35,14 +36,20 @@ export default function EventList() {
     return cleanUp;
   }, []);
 
-  console.log('--- EventListScreen events', events);
+  const formattedGroups = groupEventsByDate(events);
 
   return (
-    <View>
-      <Text>Lista</Text>
-      {events.map((event) => (
-        <Text>{event.name}</Text>
-      ))}
-    </View>
+    <SafeAreaView>
+      <SectionList
+        sections={formattedGroups}
+        keyExtractor={(item, index) => item.id}
+        renderItem={({ item }) => (
+          <View>
+            <Text>{item.name}</Text>
+          </View>
+        )}
+        renderSectionHeader={({ section: { title } }) => <Text>{title}</Text>}
+      />
+    </SafeAreaView>
   );
 }

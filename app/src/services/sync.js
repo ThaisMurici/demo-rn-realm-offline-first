@@ -8,13 +8,17 @@ async function pullChanges(realmInstance) {
   console.log('--- events from api', events);
   realmInstance.write(() => {
     events.forEach((event) => {
-      realmInstance.create('Event', {
-        id: uuidv4(),
-        name: event.name,
-        start_date: new Date(event.start_date),
-        end_date: new Date(event.end_date),
-        created_at: new Date(event.created_at),
-      });
+      realmInstance.create(
+        'Event',
+        {
+          id: event.id,
+          name: event.name,
+          start_date: new Date(event.start_date),
+          end_date: new Date(event.end_date),
+          created_at: new Date(event.created_at),
+        },
+        true,
+      );
     });
   });
 }
