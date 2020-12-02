@@ -7,6 +7,9 @@ const getUpdatedData = (dbInstance, lastSyncedAt, resourceName) => {
       .filter((item) => item.deleted_at === null)
       .sortBy('views')
       .value();
+
+    formattedData.updated = [];
+    formattedData.deleted = [];
   } else {
     formattedData.created = dbInstance
       .get(resourceName)
@@ -32,7 +35,7 @@ const getUpdatedData = (dbInstance, lastSyncedAt, resourceName) => {
     formattedData.deleted = dbInstance
       .get(resourceName)
       .filter((item) => Date.parse(item.deleted_at) >= lastSyncedAt)
-      .map((item) => item.id)
+      .map((item) => ({ id: item.id, deleted_at: item.deleted_at }))
       .value();
   }
 
@@ -46,41 +49,48 @@ const buildSyncBody = (dbInstance, lastSyncedAt) => {
 };
 
 const updateResourceData = (dbInstance, resourceName, resourceData) => {
-  console.log('------ resourceName', resourceName);
-  console.log('------ resourceData', resourceData);
-
   resourceData.created.forEach((event) => {
-    const { id, name, start_date, end_date, created_at } = event;
+    const { id, name, start_date, end_date, created_at, updated_at } = event;
+    const eventAlreadyCreated = dbInstance
+      .get(resourceName)
+      .find({ id })
+      .value();
+
+    if (eventAlreadyCreated) {
+      dbInstance
+        .get(resourceName)
+        .find({ id })
+        .assign({ name, start_date, end_date, updated_at })
+        .write();
+    } else {
+      dbInstance
+        .get(resourceName)
+        .push({
+          id,
+          name,
+          start_date,
+          end_date,
+          created_at,
+          updated_at: null,
+          deleted_at: null,
+        })
+        .write();
+    }
+  });
+
+  resourceData.updated.forEach((event) => {
+    const { name, start_date, end_date, updated_at } = event;
     dbInstance
       .get(resourceName)
-      .push({
-        id,
-        name,
-        start_date,
-        end_date,
-        created_at,
-        updated_at: null,
-        deleted_at: null,
-      })
+      .find({ id: event.id })
+      .assign({ name, start_date, end_date, updated_at })
       .write();
   });
 
-  // resourceData.updated.forEach((event) => {
-  //   const { name, start_date, end_date } = event;
-  //   dbInstance
-  //     .get(resourceName)
-  //     .find({ id: event.id })
-  //     .assign({ name, start_date, end_date })
-  //     .write();
-  // });
-  // resourceData.deleted.forEach((event) => {
-  //   const { id, deleted_at } = event;
-  //   dbInstance
-  //     .get(resourceName)
-  //     .find({ id: event.id })
-  //     .assign({ deleted_at })
-  //     .write();
-  // });
+  resourceData.deleted.forEach((event) => {
+    const { id, deleted_at } = event;
+    dbInstance.get(resourceName).find({ id }).assign({ deleted_at }).write();
+  });
 };
 
 const savePushedData = (dbInstance, updatedDataFromClient) => {

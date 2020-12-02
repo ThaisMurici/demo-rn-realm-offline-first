@@ -8,16 +8,23 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "mock-server": "node ./mockServer/server.js"
+    "mock-server": "nodemon ./mockServer/server.js"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.13.2",
+    "@react-native-community/datetimepicker": "^3.0.6",
+    "@react-native-community/netinfo": "^5.9.9",
     "axios": "^0.21.0",
     "json-server": "^0.16.3",
     "lowdb": "^1.0.0",
     "react": "16.13.1",
     "react-native": "0.63.3",
+    "react-native-floating-action": "^1.21.0",
     "react-native-get-random-values": "^1.5.0",
+    "react-native-modal-datetime-picker": "^9.1.0",
+    "react-native-vector-icons": "^7.1.0",
     "realm": "^10.0.1",
+    "styled-components": "^5.2.1",
     "uuid": "^8.3.1"
   },
   "devDependencies": {
@@ -36,7 +43,8 @@
     "jest": "^25.1.0",
     "metro-react-native-babel-preset": "^0.59.0",
     "prettier": "^2.2.0",
-    "react-test-renderer": "16.13.1"
+    "react-test-renderer": "16.13.1",
+    "reactotron-react-native": "^5.0.0"
   },
   "jest": {
     "preset": "react-native"
