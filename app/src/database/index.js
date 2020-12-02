@@ -19,7 +19,7 @@ const AppConfig = {
   primaryKey: 'id',
   properties: {
     id: 'string',
-    last_synced_at: 'date?',
+    lastSyncedAt: 'date?',
   },
 };
 
