@@ -30,6 +30,12 @@ export default function EventListScreen() {
   useEffect(() => {
     // Todo 2 - Adicionar Listeners
     // Todo 3 - Inicializar App Config
+    async function getEventList() {}
+
+    function cleanUp() {}
+
+    getEventList();
+    return cleanUp;
   }, []);
 
   return (
