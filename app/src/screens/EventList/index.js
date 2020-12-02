@@ -28,37 +28,8 @@ export default function EventListScreen() {
   const realmInstance = useRef(null);
 
   useEffect(() => {
-    async function getEventList() {
-      if (realmInstance.current === null) {
-        realmInstance.current = await getRealmInstance();
-      }
-
-      const eventsFromRealm = realmInstance.current
-        .objects('Event')
-        .sorted('created_at');
-
-      eventsFromRealm.addListener(() => {
-        setEvents([...eventsFromRealm]);
-      });
-
-      initializeAppConfig(realmInstance.current, setLastSyncDate);
-      const appSetting = realmInstance.current.objects('Setting');
-      appSetting.addListener((newAppSetting) => {
-        console.tron.log('Listener!', newAppSetting);
-        setLastSyncDate(newAppSetting[0].lastSyncedAt);
-      });
-    }
-
-    function cleanUp() {
-      if (realmInstance.current) {
-        realmInstance.current.close();
-        realmInstance.current = null;
-        setEvents([]);
-      }
-    }
-
-    getEventList();
-    return cleanUp;
+    // Todo 2 - Adicionar Listeners
+    // Todo 3 - Inicializar App Config
   }, []);
 
   return (
