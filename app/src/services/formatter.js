@@ -7,12 +7,15 @@ const groupByDate = (accumulator, currentValue) => {
     (group) => group.title === formattedDateString,
   );
 
-  if (dateGroupIndex > 0) {
+  if (dateGroupIndex >= 0) {
     accumulator[dateGroupIndex].data.push({
       id: currentValue.id,
       name: currentValue.name,
-      startDate: currentValue.start_date,
-      endDate: currentValue.end_date,
+      start_date: currentValue.start_date,
+      end_date: currentValue.end_date,
+      created_at: currentValue.created_at,
+      updated_at: currentValue.updated_at,
+      deleted_at: currentValue.deleted_at,
     });
   } else {
     accumulator.push({
@@ -21,14 +24,30 @@ const groupByDate = (accumulator, currentValue) => {
         {
           id: currentValue.id,
           name: currentValue.name,
-          startDate: currentValue.start_date,
-          endDate: currentValue.endDate,
+          start_date: currentValue.start_date,
+          end_date: currentValue.end_date,
+          created_at: currentValue.created_at,
+          updated_at: currentValue.updated_at,
+          deleted_at: currentValue.deleted_at,
         },
       ],
     });
   }
 
   return accumulator;
+};
+
+export const isoStringToReadableDateString = (isoDateString) => {
+  try {
+    if (isoDateString) {
+      console.tron.log('isoDateString', isoDateString);
+      const dateObject = new Date(isoDateString);
+      return `${dateObject.toLocaleDateString()} (${dateObject.toLocaleTimeString()})`;
+    }
+    return '---';
+  } catch (error) {
+    console.tron.log('-- ERROR', error.message);
+  }
 };
 
 export const groupEventsByDate = (eventList) => {
