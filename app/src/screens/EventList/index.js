@@ -6,21 +6,23 @@ import {
   groupEventsByDate,
   isoStringToReadableDateString,
 } from '../../services/formatter';
-import { initializeAppConfig, syncAppData } from '../../services/sync';
+import { initializeAppConfig } from '../../services/sync';
 
 import NewEventModal from './components/NewEventModal';
+import EventList from './components/EventList';
 
 import {
   ListTitle,
-  FloatingButton,
-  StyledSectionList,
   Container,
   Button,
+  HeaderContainer,
+  SyncText,
+  ButtonText,
 } from './styles';
 
-export default function EventList() {
+export default function EventListScreen() {
   const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(false);
+
   const [modalVisible, setModalVisible] = useState(false);
   const [lastSyncDate, setLastSyncDate] = useState(null);
   const realmInstance = useRef(null);
@@ -59,84 +61,30 @@ export default function EventList() {
     return cleanUp;
   }, []);
 
-  const formattedGroups = groupEventsByDate(events);
-
   return (
     <Container>
-      <ListTitle>Próximos Eventos</ListTitle>
-      <Text>
-        Última sincronização: {isoStringToReadableDateString(lastSyncDate)}
-      </Text>
-      <StyledSectionList
-        sections={formattedGroups}
-        keyExtractor={(item, index) => item.id}
-        renderItem={({ item }) => (
-          <View style={{ margin: 8 }}>
-            <Text>{item.name}</Text>
-            <Text>created_at: {item.created_at.toISOString()}</Text>
-
-            {item.deleted_at && (
-              <Text>deleted_at: {item.deleted_at.getTime()}</Text>
-            )}
-          </View>
-        )}
-        renderSectionHeader={({ section: { title } }) => <Text>{title}</Text>}
-        onRefresh={async () => {
-          setLoading(true);
-          await syncAppData(realmInstance.current);
-          setLoading(false);
-        }}
-        refreshing={loading}
-      />
-      <Button
-        title="Criar evento"
-        onPress={async () =>
-          createEvent(
-            {
-              name: 'Evento criado no app',
-              start_date: '2020-11-30T21:09:12.307Z',
-              end_date: '2020-11-30T21:09:12.307Z',
-            },
-            realmInstance.current,
-          )
-        }
-      />
-      <Button
-        title="Limpar dados"
-        onPress={() => clearAllEventsFromDatabase(realmInstance.current)}
-      />
-
-      {/* <NewEventModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-      /> */}
-      {/* <FloatingButton
-        actions={[]}
-        onPressItem={async () =>
-          createEvent(
-            {
-              name: 'Evento 13',
-              start_date: '2020-11-30T21:09:12.307Z',
-              end_date: '2020-11-30T21:09:12.307Z',
-            },
-            realmInstance.current,
-          )
-        }
-      /> */}
-
-      {/* <Button
-        title="Criar evento"
-        onPress={() =>
-          createEvent(
-            {
-              name: 'Evento 5',
-              start_date: '2020-11-29T21:09:12.307Z',
-              end_date: '2020-11-29T21:09:12.307Z',
-            },
-            realmInstance.current,
-          )
-        }
-      /> */}
+      <HeaderContainer>
+        <ListTitle>Próximos Eventos</ListTitle>
+        <SyncText>
+          Última sincronização: {isoStringToReadableDateString(lastSyncDate)}
+        </SyncText>
+      </HeaderContainer>
+      <EventList events={events} realmInstance={realmInstance.current} />
+      <View>
+        <Button onPress={() => setModalVisible(true)}>
+          <ButtonText>Criar evento</ButtonText>
+        </Button>
+        <Button
+          light
+          onPress={() => clearAllEventsFromDatabase(realmInstance.current)}>
+          <ButtonText light>Limpar dados</ButtonText>
+        </Button>
+        <NewEventModal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          realmInstance={realmInstance.current}
+        />
+      </View>
     </Container>
   );
 }
