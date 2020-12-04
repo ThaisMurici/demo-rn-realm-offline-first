@@ -38,16 +38,11 @@ const groupByDate = (accumulator, currentValue) => {
 };
 
 export const isoStringToReadableDateString = (isoDateString) => {
-  try {
-    if (isoDateString) {
-      console.tron.log('isoDateString', isoDateString);
-      const dateObject = new Date(isoDateString);
-      return `${dateObject.toLocaleDateString()} (${dateObject.toLocaleTimeString()})`;
-    }
-    return '---';
-  } catch (error) {
-    console.tron.log('-- ERROR', error.message);
+  if (isoDateString) {
+    const dateObject = new Date(isoDateString);
+    return `${dateObject.toLocaleDateString()} (${dateObject.toLocaleTimeString()})`;
   }
+  return '---';
 };
 
 export const groupEventsByDate = (eventList) => {

@@ -44,7 +44,6 @@ export default function EventListScreen() {
       initializeAppConfig(realmInstance.current, setLastSyncDate);
       const appSetting = realmInstance.current.objects('Setting');
       appSetting.addListener((newAppSetting) => {
-        console.tron.log('Listener!', newAppSetting);
         setLastSyncDate(newAppSetting[0].lastSyncedAt);
       });
     }
