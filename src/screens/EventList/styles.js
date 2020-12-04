@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { FloatingAction } from 'react-native-floating-action';
 
 export const Container = styled.SafeAreaView`
   flex: 1;
@@ -29,21 +28,6 @@ export const StyledIcon = styled(Icon).attrs({
   font-size: 24px;
   color: #fff;
 `;
-
-export const FloatingButton = styled(FloatingAction).attrs({
-  color: '#01a699',
-  distanceToEdge: 30,
-  overrideWithAction: true,
-
-  actions: [
-    {
-      text: 'New Event',
-      name: 'new_event',
-      position: 1,
-      icon: <StyledIcon />,
-    },
-  ],
-})``;
 
 export const Button = styled.TouchableHighlight`
   margin: 8px 24px;

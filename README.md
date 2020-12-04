@@ -6,7 +6,7 @@
 Offline First no React Native - Exemplo Prático
 </h1>
 
-<p align="center">Projeto utilizado como exemplo na live sobre Offline First da WomakersCode em parceria com a DTI digital.</p>
+<p align="center">Projeto utilizado como exemplo na <a href="https://www.youtube.com/watch?v=N5s6ESYjSDk">live sobre Offline First</a> da WoMakersCode em parceria com a DTI digital.</p>
 
 <hr />
 
@@ -45,6 +45,18 @@ Finalmente, para executar o app:
   ```
   npx react-native run-ios
   ```
+
+Obs.: dependendo de qual emulador você esteja usando, talvez seja necessário alterar a URL base que se encontra no arquivo `services/api.js`.
+
+```js
+const apiService = axios.create({
+  baseURL: 'http://localhost:3000/', // funciona no iOS
+});
+
+const apiService = axios.create({
+  baseURL: 'http://10.0.2.2:3000/', // funciona no Android
+});
+```
 
 ## Observações
 
