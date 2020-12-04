@@ -1,7 +1,7 @@
-import 'react-native-get-random-values';
-import apiService from './api';
 import NetInfo from '@react-native-community/netinfo';
 import { Alert } from 'react-native';
+import 'react-native-get-random-values';
+import apiService from './api';
 
 export function initializeAppConfig(realmInstance) {
   realmInstance.write(() => {
@@ -76,12 +76,6 @@ async function pushChanges(realmInstance) {
   const { lastSyncedAt } = realmInstance.objects('Setting')[0];
 
   if (lastSyncedAt) {
-    const lastSyncedAtPredicate = lastSyncedAt
-      .toISOString()
-      .split('Z')[0]
-      .replace('T', '@')
-      .split('.')[0];
-
     const createdObjectsSinceLastSync = realmInstance
       .objects('Event')
       .filtered(
